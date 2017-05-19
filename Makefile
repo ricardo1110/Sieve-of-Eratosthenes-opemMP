@@ -9,7 +9,7 @@ CTRL_EXE = control.exe
 DATA_EXE = data.exe
 
 #Compile everything
-all: $(CTRL_EXE) $(DATA_EXE) $(SEQ_EXE) #$(DATA_EXE)
+all: $(CTRL_EXE) $(DATA_EXE) $(SEQ_EXE) 
 
 $(SEQ_EXE): $(SEQ_S)
 	$(CC) $(SEQ_S) -o $@ $(LIB)
