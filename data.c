@@ -10,13 +10,16 @@ typedef char bool;
 
 
 void usage(char* prog) {
-    printf("Usage: %s [positive whole number]\n", prog);
+    printf("Usage: %s [positive whole number] [number of threads]\n\n"
+            "The number of threads must be less then or equal to the "
+            "whole number\n", prog);
     exit(-1);
 }
 
 int main(int argc, char* argv[0]) {
     int i, idx;
     int N, sqrt_N;
+    int nT;
     int p;
     bool* prime;
     int currentPrime;
@@ -27,13 +30,14 @@ int main(int argc, char* argv[0]) {
     currentPrime = 0;
 
     //Wrong arguments handling
-    if (argc != 2) {
+    if (argc != 3) {
         usage(argv[0]);
     }
 
     //Input conversion
     N = (int) atoi(argv[1]);
-    if (N < 1) {
+    nT = (int) atoi(argv[2]);
+    if (N < 1 || nT < 1 || nT > N) {
         usage(argv[0]);
     }
 
@@ -46,7 +50,7 @@ int main(int argc, char* argv[0]) {
     #pragma omp parallel \
                 private(p, i, tid, beg, end) \
                 shared(prime, N, sqrt_N, currentPrime, nThreads, nQuo, nRem) \
-                num_threads(8)
+                num_threads(nT)
     {
         //Set every entry of array as TRUE
         #pragma omp for
