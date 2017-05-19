@@ -22,12 +22,8 @@ int main(int argc, char* argv[0]) {
     int nT;
     int p;
     bool* prime;
-    int currentPrime;
     int beg, end;
     int nThreads, nQuo, nRem, tid;
-
-    //Init currentPrime
-    currentPrime = 0;
 
     //Wrong arguments handling
     if (argc != 3) {
@@ -49,7 +45,7 @@ int main(int argc, char* argv[0]) {
 
     #pragma omp parallel \
                 private(p, i, tid, beg, end) \
-                shared(prime, N, sqrt_N, currentPrime, nThreads, nQuo, nRem) \
+                shared(prime, N, sqrt_N, nThreads, nQuo, nRem) \
                 num_threads(nT)
     {
         //Set every entry of array as TRUE
@@ -74,9 +70,6 @@ int main(int argc, char* argv[0]) {
 
         for (p = 2; p <= sqrt_N; p++) {
             if (prime[p-2]) {
-                if (currentPrime <= end && currentPrime >= beg) {
-                    if (currentPrime <= p) currentPrime = p;
-                }
                 i = ceil((beg+2)/(float)p)*p;
                 if(i == p) i += p;
                 //printf("<%d> i=%d\n", args->id, i);
